@@ -33,7 +33,10 @@ var Player = function() {
 };
 
 Player.prototype.update = function(dt) {
-
+    this.x += this.speed * dt;
+    if(this.x > 606) {
+        this.x = Player.reset();
+    }
 };
 
 Player.prototype.render = function() {
@@ -48,7 +51,8 @@ Player.prototype.handleInput = function() {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-var allEnemies = [];
+var allEnemies = [new Enemy(10, 10)];
+var player = new Player();
 
 
 
