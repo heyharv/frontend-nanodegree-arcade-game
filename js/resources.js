@@ -59,6 +59,7 @@
                 if(isReady()) {
                     readyCallbacks.forEach(function(func) { func(); });
                 }
+                //by now readyCallbaks has init(), reset(), lastTime = Date.now() and main() in the array
             };
 
             /* Set the initial cache value to false, this will change when
