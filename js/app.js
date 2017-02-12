@@ -19,7 +19,7 @@ Enemy.prototype.update = function(dt) {
     // all computers.
     this.x += this.speed * dt;
     if(this.x > 505) {
-        this.x = Enemy.reset();
+        this.x = 50;
     }
 };
 
@@ -61,7 +61,7 @@ Player.prototype.handleInput = function() {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-var allEnemies = [];
+var allEnemies = [new Enemy(101, 166), new Enemy(101, 249)];
 var enemy = new Enemy(101, 166);
 var player = new Player(303, 498);
 
