@@ -1,5 +1,25 @@
+//Enemy varialbles
+var STAGE_WIDTH = 505;
+var ENEMY_WIDTH = 100;
+var ENEMY_HEIGHT = 67;
+var CELL_HEIGHT = 83;
+var COLLISION_DISTANCE = 60;
+
+//Player variables
+var START_X = 200;
+var Y_TOP_BOUNDARY = 50;
+var Y_BOTTOM_BOUNDARY = 415;
+var X_LEFT_BOUNDARY = 0;
+var X_RIGHT_BOUNDARY = 438;
+
+var STEP = 41.5;
+
+var PLAYER_WIDTH = 67;
+var PLAYER_HEIGHT = 76;
+
+
 // Enemies our player must avoid
-var Enemy = function(x, y) {
+var Enemy = function(x, y, speed, sprite) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
@@ -18,7 +38,7 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
     this.x += this.speed * dt;
-    if(this.x > 505) {
+    if(this.x > STAGE_WIDTH) {
         this.x = Math.random()*100;
     }
 };
@@ -35,13 +55,21 @@ Enemy.prototype.render = function() {
 var Player = function(x, y) {
     this.x = x;
     this.y = y;
-    this.speed = 100;
-    this.sprite = 'images/char-pink-girl.png';
+    this.initialPosition();
+    this.sprite = 'images/char-pink-girl.png'; //she is 101x171 px
+    captureKeyboardInput(this);
     
 };
 
-Player.prototype.update = function(dt) {
-    //this.x += this.speed * dt;
+Player.prototype.update = function() {
+    //this.x += this.speed * dt; this causes the Player sprite to disappear
+    
+    if(this.x < 0) { //this statement prevents her from moving off of the board
+        this.x = 0;
+    } else if (this.y < 0) {
+        this.y = 0;
+    }
+///http://jmiguelsamper.github.io/html5-frogger/
 
 };
 
@@ -49,11 +77,60 @@ Player.prototype.update = function(dt) {
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
-/*
-Player.prototype.handleInput = function() {
 
+
+Player.prototype.handleInput = function(key) {
+    switch(key) {
+        case 'up': 
+            this.y -= STEP;
+            break;
+        case 'down':
+            this.y += STEP;
+            break;
+        case 'left':
+            this.x -= STEP;
+            break;
+        case 'right':
+            this.x += STEP;
+            break;
+        default:
+            return;
+    }
+    this.checkBoundaries();    
 };
-*/
+
+Player.prototype.centerX = function() {
+    return this.x + PLAYER_WIDTH / 2;
+};
+
+Player.prototype.centerY = function() {
+    return this.y + PLAYER_HEIGHT / 2;
+};
+
+Player.prototype.reachesTop = function() {
+    return this.y <= Y_TOP_BOUNDARY;
+};
+
+Player.prototype.initialPosition = function() {
+    this.x = START_X;
+    this.y = Y_BOTTOM_BOUNDARY;
+};
+
+Player.prototype.checkBoundaries = function() {
+    if (this.y <= Y_TOP_BOUNDARY) {
+        this.y = Y_TOP_BOUNDARY;
+    }
+    if (this.y >= Y_BOTTOM_BOUNDARY) {
+        this.y = Y_BOTTOM_BOUNDARY;
+    }
+    if (this.x <= X_LEFT_BOUNDARY) {
+        this.x = X_LEFT_BOUNDARY;
+    }
+    if (this.x >= X_RIGHT_BOUNDARY) {
+        this.x = X_RIGHT_BOUNDARY;
+    }
+};
+
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -66,13 +143,15 @@ var player = new Player(204, 415);
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
-document.addEventListener('keyup', function(e) {
-    var allowedKeys = {
-        37: 'left',
-        38: 'up',
-        39: 'right',
-        40: 'down'
-    };
+function captureKeyboardInput(player) {
+    document.addEventListener('keyup', function(e) {
+        var allowedKeys = {
+            37: 'left',
+            38: 'up',
+            39: 'right',
+            40: 'down'
+        };
 
-    player.handleInput(allowedKeys[e.keyCode]);
-});
+        player.handleInput(allowedKeys[e.keyCode]);
+    });
+}
