@@ -61,16 +61,31 @@ var Player = function(x, y) {
     
 };
 
-Player.prototype.update = function() {
-    //this.x += this.speed * dt; this causes the Player sprite to disappear
-    
-    if(this.x < 0) { //this statement prevents her from moving off of the board
-        this.x = 0;
-    } else if (this.y < 0) {
-        this.y = 0;
-    }
+Player.prototype.update = function(centerX, centerY, reachesTop, checkBoundaries) {
 ///http://jmiguelsamper.github.io/html5-frogger/
-
+    this.centerX = function() {
+        return this.x + PLAYER_WIDTH / 2;
+    };
+    this.centerY = function() {
+        return this.y + PLAYER_HEIGHT / 2;
+    };
+    this.reachesTop = function() {
+        return this.y <= Y_TOP_BOUNDARY;
+    };
+    this.checkBoundaries = function() {
+        if (this.y <= Y_TOP_BOUNDARY) {
+            this.y = Y_TOP_BOUNDARY;
+        }
+        if (this.y >= Y_BOTTOM_BOUNDARY) {
+            this.y = Y_BOTTOM_BOUNDARY;
+        }
+        if (this.x <= X_LEFT_BOUNDARY) {
+            this.x = X_LEFT_BOUNDARY;
+        }
+        if (this.x >= X_RIGHT_BOUNDARY) {
+            this.x = X_RIGHT_BOUNDARY;
+        }
+    };
 };
 
 
@@ -99,36 +114,9 @@ Player.prototype.handleInput = function(key) {
     this.checkBoundaries();    
 };
 
-Player.prototype.centerX = function() {
-    return this.x + PLAYER_WIDTH / 2;
-};
-
-Player.prototype.centerY = function() {
-    return this.y + PLAYER_HEIGHT / 2;
-};
-
-Player.prototype.reachesTop = function() {
-    return this.y <= Y_TOP_BOUNDARY;
-};
-
 Player.prototype.initialPosition = function() {
     this.x = START_X;
     this.y = Y_BOTTOM_BOUNDARY;
-};
-
-Player.prototype.checkBoundaries = function() {
-    if (this.y <= Y_TOP_BOUNDARY) {
-        this.y = Y_TOP_BOUNDARY;
-    }
-    if (this.y >= Y_BOTTOM_BOUNDARY) {
-        this.y = Y_BOTTOM_BOUNDARY;
-    }
-    if (this.x <= X_LEFT_BOUNDARY) {
-        this.x = X_LEFT_BOUNDARY;
-    }
-    if (this.x >= X_RIGHT_BOUNDARY) {
-        this.x = X_RIGHT_BOUNDARY;
-    }
 };
 
 
@@ -136,13 +124,13 @@ Player.prototype.checkBoundaries = function() {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var allEnemies = [new Enemy(10, 150), new Enemy(10, 239), new Enemy(10, 73)];
-var player = new Player(204, 415);
+var player = new Player();
 
 
 
 
 // This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
+// Player.handleInput() method. You don't need to modify this. Oh! But I will!
 function captureKeyboardInput(player) {
     document.addEventListener('keyup', function(e) {
         var allowedKeys = {
