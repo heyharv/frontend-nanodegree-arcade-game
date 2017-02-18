@@ -7,7 +7,7 @@ var COLLISION_DISTANCE = 60;
 
 //Player variables
 var START_X = 200;
-var Y_TOP_BOUNDARY = 50;
+var Y_TOP_BOUNDARY = 0;
 var Y_BOTTOM_BOUNDARY = 415;
 var X_LEFT_BOUNDARY = 0;
 var X_RIGHT_BOUNDARY = 438;
@@ -27,14 +27,14 @@ var Enemy = function(x, y, speed, sprite) {
     // a helper we've provided to easily load images
     this.x = x;
     this.y = y;
-    this.speed = Math.random() * 400;
+    this.speed = Math.random() * 200;
     this.direction = randomSpeed();
     this.sprite = 'images/enemy-bug.png';
 };
 
 function randomSpeed() {
     var direction = Math.random() >= 0.4 ? 1 : -1;
-    return direction * (50 + Math.random() * 50);
+    return direction * (40 + Math.random() * 40);
 }
 
 
