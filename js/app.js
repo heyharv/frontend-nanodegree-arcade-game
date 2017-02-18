@@ -27,25 +27,57 @@ var Enemy = function(x, y, speed, sprite) {
     // a helper we've provided to easily load images
     this.x = x;
     this.y = y;
-    this.speed = Math.random()*100;
+    this.speed = Math.random() * 400;
+    this.direction = randomSpeed();
     this.sprite = 'images/enemy-bug.png';
 };
 
+function randomSpeed() {
+    var direction = Math.random() >= 0.4 ? 1 : -1;
+    return direction * (50 + Math.random() * 50);
+}
+
+
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt) {
+Enemy.prototype.update = function(dt, centerX, centerY, increaseSpeed) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.x += this.speed * dt;
-    if(this.x > STAGE_WIDTH) {
-        this.x = Math.random()*100;
+
+    if(this.x >= STAGE_WIDTH) {
+        this.x = -ENEMY_WIDTH;
+    } else if (this.x <= -ENEMY_WIDTH) {
+        this.x = STAGE_WIDTH;
     }
+    this.x += this.speed * dt;
+
+    this.centerX = function() {
+        return this.x + ENEMY_WIDTH / 2;
+    };
+    this.centerY = function() {
+        return this.y + ENEMY_HEIGHT / 2;
+    };
+    this.increaseSpeed = function() {
+        this.speed = this.speed * 1.15;
+    }
+    
 };
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+Enemy.prototype.checkCollisions = function(player) {
+    return this.distance(player) < COLLISION_DISTANCE;
+};
+
+Enemy.prototype.distance = function(player) {
+    return Math.sqrt(
+            Math.pow(this.centerX() - player.centerX(), 2) + 
+            Math.pow(this.centerY() - player.centerY(), 2)
+        );
 };
 
 // Now write your own player class
