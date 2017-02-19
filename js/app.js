@@ -110,6 +110,8 @@ Player.prototype.update = function(centerX, centerY, reachesTop, checkBoundaries
     for (var i=0; i < allEnemies.length; i++) {
         if (player.x < allEnemies[i].x + ENEMY_WIDTH && player.x + PLAYER_WIDTH > allEnemies[i].x && player.y < allEnemies[i].y + ENEMY_HEIGHT && PLAYER_HEIGHT + player.y > allEnemies[i].y) {
             player.initialPosition();
+        } else if (player.y == 0) {
+            player.initialPosition();
         }
     }
 };
