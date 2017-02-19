@@ -61,23 +61,11 @@ Enemy.prototype.update = function(dt, centerX, centerY, increaseSpeed) {
     this.increaseSpeed = function() {
         this.speed = this.speed * 1.15;
     }
-    
 };
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
-Enemy.prototype.checkCollisions = function(player) {
-    return this.distance(player) < COLLISION_DISTANCE;
-};
-
-Enemy.prototype.distance = function(player) {
-    return Math.sqrt(
-            Math.pow(this.centerX() - player.centerX(), 2) + 
-            Math.pow(this.centerY() - player.centerY(), 2)
-        );
 };
 
 // Now write your own player class
@@ -118,6 +106,12 @@ Player.prototype.update = function(centerX, centerY, reachesTop, checkBoundaries
             this.x = X_RIGHT_BOUNDARY;
         }
     };
+
+    for (var i=0; i < allEnemies.length; i++) {
+        if (player.x < allEnemies[i].x + ENEMY_WIDTH && player.x + PLAYER_WIDTH > allEnemies[i].x && player.y < allEnemies[i].y + ENEMY_HEIGHT && PLAYER_HEIGHT + player.y > allEnemies[i].y) {
+            player.initialPosition();
+        }
+    }
 };
 
 
@@ -150,7 +144,6 @@ Player.prototype.initialPosition = function() {
     this.x = START_X;
     this.y = Y_BOTTOM_BOUNDARY;
 };
-
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies

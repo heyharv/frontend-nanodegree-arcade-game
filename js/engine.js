@@ -139,15 +139,6 @@ var Engine = (function(global) {
         renderEntities();
     }
 
-    function isThereCollision() {
-        for(var i = 0; i < this.allEnemies.length; i++) {
-            var enemy = this.allEnemies[i];
-            if(enemy.isThereCollision(this.player)) {
-                return true;
-            }
-        }
-        return false;
-    }
     /* This function is called by the render function and is called on each game
      * tick. Its purpose is to then call the render functions you have defined
      * on your enemy and player entities within app.js
