@@ -80,8 +80,20 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        //checkCollisions();
+        checkCollisions();
     }
+
+    function checkCollisions() {
+        for (var i=0; i < allEnemies.length; i++) {
+            if (player.x < allEnemies[i].x + ENEMY_WIDTH && player.x + PLAYER_WIDTH > allEnemies[i].x && player.y < allEnemies[i].y + ENEMY_HEIGHT && PLAYER_HEIGHT + player.y > allEnemies[i].y) {
+                alert("Crash!");
+                player.initialPosition();
+            } else if (player.y == 0) {
+                alert("Woo!");
+                player.initialPosition();
+            }
+        }
+    };
 
     /* This is called by the update function and loops through all of the
      * objects within your allEnemies array as defined in app.js and calls

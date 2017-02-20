@@ -10,12 +10,16 @@ var START_X = 200;
 var Y_TOP_BOUNDARY = 0;
 var Y_BOTTOM_BOUNDARY = 415;
 var X_LEFT_BOUNDARY = 0;
-var X_RIGHT_BOUNDARY = 438;
+var X_RIGHT_BOUNDARY = 418;
 
 var STEP = 41.5;
 
 var PLAYER_WIDTH = 67;
 var PLAYER_HEIGHT = 76;
+
+var WIN_SCORE = 100;
+var INCREASE_SCORE = 15;
+var DECREASE_SCORE = 10;
 
 
 // Enemies our player must avoid
@@ -106,14 +110,6 @@ Player.prototype.update = function(centerX, centerY, reachesTop, checkBoundaries
             this.x = X_RIGHT_BOUNDARY;
         }
     };
-
-    for (var i=0; i < allEnemies.length; i++) {
-        if (player.x < allEnemies[i].x + ENEMY_WIDTH && player.x + PLAYER_WIDTH > allEnemies[i].x && player.y < allEnemies[i].y + ENEMY_HEIGHT && PLAYER_HEIGHT + player.y > allEnemies[i].y) {
-            player.initialPosition();
-        } else if (player.y == 0) {
-            player.initialPosition();
-        }
-    }
 };
 
 
@@ -147,14 +143,12 @@ Player.prototype.initialPosition = function() {
     this.y = Y_BOTTOM_BOUNDARY;
 };
 
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var allEnemies = [new Enemy(10, 150), new Enemy(10, 239), new Enemy(10, 73)];
 var player = new Player();
-
-
-
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this. Oh! But I will!
