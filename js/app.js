@@ -1,7 +1,7 @@
 //Enemy varialbles
 var STAGE_WIDTH = 505;
-var ENEMY_WIDTH = 100;
-var ENEMY_HEIGHT = 67;
+var ENEMY_WIDTH = 70;
+var ENEMY_HEIGHT = 42;
 var CELL_HEIGHT = 83;
 var COLLISION_DISTANCE = 60;
 
@@ -14,8 +14,8 @@ var X_RIGHT_BOUNDARY = 418;
 
 var STEP = 41.5;
 
-var PLAYER_WIDTH = 67;
-var PLAYER_HEIGHT = 76;
+var PLAYER_WIDTH = 57;
+var PLAYER_HEIGHT = 56;
 
 var WIN_SCORE = 100;
 var INCREASE_SCORE = 15;
