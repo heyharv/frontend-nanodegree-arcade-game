@@ -27,23 +27,18 @@ var Enemy = function(x, y, speed, sprite) {
     this.x = x;
     this.y = y;
     this.speed = Math.random() * 200;
-    this.direction = randomSpeed();
     this.sprite = 'images/enemy-bug.png';
 };
-
-function randomSpeed() {
-    var direction = Math.random() >= 0.4 ? 1 : -1;
-    return direction * (40 + Math.random() * 40);
-}
 
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt, centerX, centerY, increaseSpeed) {
+Enemy.prototype.update = function(dt, centerX, centerY, increaseSpeed, isThereCollision) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
 
+    //puts the enemy on the canvas
     if(this.x >= STAGE_WIDTH) {
         this.x = -ENEMY_WIDTH;
     } else if (this.x <= -ENEMY_WIDTH) {
@@ -59,6 +54,18 @@ Enemy.prototype.update = function(dt, centerX, centerY, increaseSpeed) {
     };
     this.increaseSpeed = function() {
         this.speed = this.speed * 1.15;
+    }
+
+    //the isThereCollision and distance methods ensure that the collision occurs accurately, not too far or close
+    this.isThereCollision = function(player) {
+        return this.distance(player) < COLLISION_DISTANCE;
+    }
+
+    this.distance = function(player) {
+        return Math.sqrt (
+            Math.pow(this.centerX() - player.centerX(), 2) +
+            Math.pow(this.centerY() - player.centerY(), 2)
+        );
     }
 };
 
@@ -81,7 +88,7 @@ var Player = function(x, y) {
 };
 
 Player.prototype.update = function(centerX, centerY, reachesTop, checkBoundaries) {
-///http://jmiguelsamper.github.io/html5-frogger/
+    //put the player on the canvas
     this.centerX = function() {
         return this.x + PLAYER_WIDTH / 2;
     };
@@ -91,6 +98,7 @@ Player.prototype.update = function(centerX, centerY, reachesTop, checkBoundaries
     this.reachesTop = function() {
         return this.y <= Y_TOP_BOUNDARY;
     };
+    //keep the player from falling off of the canvas
     this.checkBoundaries = function() {
         if (this.y <= Y_TOP_BOUNDARY) {
             this.y = Y_TOP_BOUNDARY;
@@ -112,7 +120,7 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-
+//ensure that the arrow keys can be used to navigate the player
 Player.prototype.handleInput = function(key) {
     switch(key) {
         case 'up': 
@@ -132,7 +140,7 @@ Player.prototype.handleInput = function(key) {
     }
     this.checkBoundaries();    
 };
-
+//put the player on a starting point on the canvas
 Player.prototype.initialPosition = function() {
     this.x = START_X;
     this.y = Y_BOTTOM_BOUNDARY;
@@ -147,6 +155,8 @@ var player = new Player();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this. Oh! But I will!
+
+//making the small change to this code block worked for me
 function captureKeyboardInput(player) {
     document.addEventListener('keyup', function(e) {
         var allowedKeys = {

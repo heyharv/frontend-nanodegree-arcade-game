@@ -89,8 +89,10 @@ var Engine = (function(global) {
         updateEntities(dt);
         checkCollisions();
         gameFinished();
+        stopAnimationFrame();
     }
 
+    //my collision detection, thank you MDN!
     function checkCollisions() {
         for (var i=0; i < allEnemies.length; i++) {
             if (player.x < allEnemies[i].x + ENEMY_WIDTH && player.x + PLAYER_WIDTH > allEnemies[i].x && player.y < allEnemies[i].y + ENEMY_HEIGHT && PLAYER_HEIGHT + player.y > allEnemies[i].y) {
@@ -103,16 +105,22 @@ var Engine = (function(global) {
                 player.initialPosition();
             }
         }
-    };
+    }
 
+    //all good things must come to an end
     function gameFinished() {
         if(score >= WIN_SCORE) {
-            document.getElementById('finish').innerHTML = "YOU WIN!!!";
+            document.getElementById('finish').innerHTML = 'YOU WIN!!!';
         }
     }
 
+    //this makes sure that the score resets and you can play again fresh
     function stopAnimationFrame() {
-        this.main = function(){};
+        if(score >= 110) {
+            score = 0; //this must not be declared with var!
+            document.getElementById('score').innerHTML = score;
+            document.getElementById('finish').innerHTML = "";
+        }
     }
 
 
