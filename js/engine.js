@@ -29,6 +29,12 @@ var Engine = (function(global) {
     canvas.height = 606;
     doc.body.appendChild(canvas);
 
+    var score = 0;
+    var points = 0;
+    var WIN_SCORE = 100;
+    var INCREASE_SCORE = 10;
+    var DECREASE_SCORE = 5;
+
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
@@ -82,19 +88,33 @@ var Engine = (function(global) {
     function update(dt) {
         updateEntities(dt);
         checkCollisions();
+        gameFinished();
     }
 
     function checkCollisions() {
         for (var i=0; i < allEnemies.length; i++) {
             if (player.x < allEnemies[i].x + ENEMY_WIDTH && player.x + PLAYER_WIDTH > allEnemies[i].x && player.y < allEnemies[i].y + ENEMY_HEIGHT && PLAYER_HEIGHT + player.y > allEnemies[i].y) {
-                alert("Crash!");
+                document.getElementById('score').innerHTML = score -= DECREASE_SCORE;
+                points = score;
                 player.initialPosition();
             } else if (player.y == 0) {
-                alert("Woo!");
+                document.getElementById('score').innerHTML = score += INCREASE_SCORE;
+                points = score;
                 player.initialPosition();
             }
         }
     };
+
+    function gameFinished() {
+        if(score >= WIN_SCORE) {
+            document.getElementById('finish').innerHTML = "YOU WIN!!!";
+        }
+    }
+
+    function stopAnimationFrame() {
+        this.main = function(){};
+    }
+
 
     /* This is called by the update function and loops through all of the
      * objects within your allEnemies array as defined in app.js and calls

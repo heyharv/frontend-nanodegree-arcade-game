@@ -2,7 +2,6 @@
 var STAGE_WIDTH = 505;
 var ENEMY_WIDTH = 70;
 var ENEMY_HEIGHT = 42;
-var CELL_HEIGHT = 83;
 var COLLISION_DISTANCE = 60;
 
 //Player variables
@@ -16,10 +15,6 @@ var STEP = 41.5;
 
 var PLAYER_WIDTH = 57;
 var PLAYER_HEIGHT = 56;
-
-var WIN_SCORE = 100;
-var INCREASE_SCORE = 15;
-var DECREASE_SCORE = 10;
 
 
 // Enemies our player must avoid
