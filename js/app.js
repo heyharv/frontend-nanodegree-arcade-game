@@ -18,7 +18,7 @@ var PLAYER_HEIGHT = 56;
 
 
 // Enemies our player must avoid
-var Enemy = function(x, y, speed, sprite) {
+function Enemy(x, y, speed, sprite) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
@@ -78,14 +78,13 @@ Enemy.prototype.render = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 
-var Player = function(x, y) {
+function Player(x, y, sprite){
     this.x = x;
     this.y = y;
     this.initialPosition();
-    this.sprite = 'images/char-pink-girl.png'; //she is 101x171 px
+    this.sprite = 'images/char-pink-girl.png'; 
     captureKeyboardInput(this);
-    
-};
+}
 
 Player.prototype.update = function(centerX, centerY, reachesTop, checkBoundaries) {
     //put the player on the canvas
